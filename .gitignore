@@ -1,2 +1,16 @@
 .terraform/
 .terraform.lock.hcl
+
+.DS_Store
+
+port-forward.sh
+gen-password.sh
+
+app/
+octo/
+octopus/
+
+.env.script
+
+templates/certificates/client-cert.pem
+templates/certificates/client-key.pem
