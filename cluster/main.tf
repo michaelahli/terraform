@@ -32,22 +32,17 @@ variable "cert_issuer_environments" {
     acme_server : string
     secret_ref_name : string
   }))
-  default = {
-    production = {
-      namespace : "production-octopus"
-      issuer_name : "letsencrypt-traefik-production"
-      email : "cert@yopmail.com"
-      acme_server : "https://acme-v02.api.letsencrypt.org/directory"
-      secret_ref_name : "letsencrypt-traefik-production"
-    },
-    staging = {
-      namespace : "staging-octopus"
-      issuer_name : "letsencrypt-traefik-staging"
-      email : "cert@yopmail.com"
-      acme_server : "https://acme-v02.api.letsencrypt.org/directory"
-      secret_ref_name : "letsencrypt-traefik-staging"
-    }
-  }
+  default = {}
+}
+
+variable "kubernetes_secrets" {
+  description = "A map of Kubernetes secrets to create"
+  type = map(object({
+    type        = string
+    namespace   = string
+    data        = map(string)
+  }))
+  default = {}
 }
 
 resource "kubernetes_namespace" "stdns" {
@@ -126,6 +121,19 @@ resource "kubernetes_manifest" "cert_issuer" {
   }
 }
 
+resource "kubernetes_secret" "example" {
+  for_each = var.kubernetes_secrets
+
+  metadata {
+    name      = each.key
+    namespace = each.value.namespace
+  }
+
+  type = each.value.type
+
+  data = each.value.data
+}
+
 output "namespace_ids" {
   value       = [for ns in kubernetes_namespace.stdns : ns.id]
   description = "The IDs of the created namespaces"
@@ -144,4 +152,11 @@ output "k8s_role_names" {
 output "k8s_role_binding_names" {
   value = { for key in keys(var.role_environments) : key => kubernetes_role_binding.octopus_role_binding[key].metadata[0].name }
   description = "A map of environment keys to Kubernetes role binding names."
+}
+
+output "created_secrets" {
+  value = {
+    for each in kubernetes_secret.example:
+      "${each.metadata[0].namespace}/${each.metadata[0].name}" => each.id
+  }
 }

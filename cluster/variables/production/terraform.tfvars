@@ -53,3 +53,25 @@ cert_issuer_environments = {
         secret_ref_name : "letsencrypt-traefik-staging"
     }
 }
+kubernetes_secrets = {
+    "staging-docker" = {
+        type      = "kubernetes.io/dockerconfigjson"
+        namespace = "staging-octopus"
+        data      = { ".dockerconfigjson" = "eyJhdXRocyI6eyJob3N0LmRvY2tlci5pbnRlcm5hbDozMDUwMCI6eyJ1c2VybmFtZSI6ImJwY2xvdWRyZXBvc2l0b3J5IiwicGFzc3dvcmQiOiJLaWFzdTEyMyEiLCJhdXRoIjoiWW5CamJHOTFaSEpsY0c5emFYUnZjbms2UzJsaGMzVXhNak1oIn19fQ==" }
+    },
+    "production-docker" = {
+        type      = "kubernetes.io/dockerconfigjson"
+        namespace = "production-octopus"
+        data      = { ".dockerconfigjson" = "eyJhdXRocyI6eyJob3N0LmRvY2tlci5pbnRlcm5hbDozMDUwMCI6eyJ1c2VybmFtZSI6ImJwY2xvdWRyZXBvc2l0b3J5IiwicGFzc3dvcmQiOiJLaWFzdTEyMyEiLCJhdXRoIjoiWW5CamJHOTFaSEpsY0c5emFYUnZjbms2UzJsaGMzVXhNak1oIn19fQ==" }
+    },
+    "octopus-secret-production" = {
+        type      = "Opaque"
+        namespace = "production-octopus"
+        data      = { "DATABASE_PASSWORD" = "c3VwZXJzZWNyZXRwYXNzd29yZA==" }
+    },
+    "octopus-secret-staging" = {
+        type      = "Opaque"
+        namespace = "staging-octopus"
+        data      = { "DATABASE_PASSWORD" = "c3VwZXJzZWNyZXRwYXNzd29yZA==" }
+    }
+}

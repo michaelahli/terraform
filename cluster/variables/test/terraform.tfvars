@@ -28,3 +28,10 @@ cert_issuer_environments = {
         secret_ref_name : "letsencrypt-traefik-test"
     }
 }
+kubernetes_secrets = {
+    "secret-test" = {
+        type      = "Opaque"
+        namespace = "testns"
+        data      = { "DATABASE_PASSWORD" = "c3VwZXJzZWNyZXRwYXNzd29yZA==" }
+    }
+}
