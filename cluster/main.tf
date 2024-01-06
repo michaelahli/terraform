@@ -24,6 +24,32 @@ variable "role_environments" {
   default = {}
 }
 
+variable "cert_issuer_environments" {
+  type = map(object({
+    namespace : string
+    issuer_name : string
+    email : string
+    acme_server : string
+    secret_ref_name : string
+  }))
+  default = {
+    production = {
+      namespace : "production-octopus"
+      issuer_name : "letsencrypt-traefik-production"
+      email : "cert@yopmail.com"
+      acme_server : "https://acme-v02.api.letsencrypt.org/directory"
+      secret_ref_name : "letsencrypt-traefik-production"
+    },
+    staging = {
+      namespace : "staging-octopus"
+      issuer_name : "letsencrypt-traefik-staging"
+      email : "cert@yopmail.com"
+      acme_server : "https://acme-v02.api.letsencrypt.org/directory"
+      secret_ref_name : "letsencrypt-traefik-staging"
+    }
+  }
+}
+
 resource "kubernetes_namespace" "stdns" {
   count = length(var.namespaces)
 
@@ -68,6 +94,35 @@ resource "kubernetes_role_binding" "octopus_role_binding" {
     kind      = "ServiceAccount"
     name      = each.value.service_account_name
     namespace = each.value.namespace
+  }
+}
+
+resource "kubernetes_manifest" "cert_issuer" {
+  for_each = var.cert_issuer_environments
+
+  manifest = {
+    apiVersion = "cert-manager.io/v1"
+    kind       = "Issuer"
+    metadata = {
+      name      = each.value.issuer_name
+      namespace = each.value.namespace
+    }
+    spec = {
+      acme = {
+        server = each.value.acme_server
+        email  = each.value.email
+        privateKeySecretRef = {
+          name = each.value.secret_ref_name
+        }
+        solvers = [{
+          http01 = {
+            ingress = {
+              class = "traefik"
+            }
+          }
+        }]
+      }
+    }
   }
 }
 

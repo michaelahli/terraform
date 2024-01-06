@@ -37,3 +37,19 @@ role_environments = {
         ]
     }
 }
+cert_issuer_environments = {
+    production = {
+        namespace : "production-octopus"
+        issuer_name : "letsencrypt-traefik-production"
+        email : "cert@yopmail.com"
+        acme_server : "https://acme-v02.api.letsencrypt.org/directory"
+        secret_ref_name : "letsencrypt-traefik-production"
+    },
+    staging = {
+        namespace : "staging-octopus"
+        issuer_name : "letsencrypt-traefik-staging"
+        email : "cert@yopmail.com"
+        acme_server : "https://acme-v02.api.letsencrypt.org/directory"
+        secret_ref_name : "letsencrypt-traefik-staging"
+    }
+}

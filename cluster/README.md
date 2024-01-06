@@ -13,11 +13,14 @@ Install this project with `terraform init`
 ```
     
 ## Execute
-
+Validate the code with `terraform validate`
+```bash
+  terraform -chdir=cluster/ validate
+```
 Review the plan with `terraform plan`
 
 ```bash
-  terraform -chdir=cluster/ plan -var-file=variables/test/terraform.tfvars
+  terraform -chdir=cluster/ validate -var-file=variables/test/terraform.tfvars
 ```
 Then apply the changes with `terraform apply`
 

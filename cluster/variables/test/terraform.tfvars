@@ -19,3 +19,12 @@ role_environments = {
         ]
     }
 }
+cert_issuer_environments = {
+    test = {
+        namespace : "testns"
+        issuer_name : "letsencrypt-traefik-test"
+        email : "testcert@yopmail.com"
+        acme_server : "https://acme-v02.api.letsencrypt.org/directory"
+        secret_ref_name : "letsencrypt-traefik-test"
+    }
+}
