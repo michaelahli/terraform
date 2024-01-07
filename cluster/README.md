@@ -1,5 +1,5 @@
 
-# Terraform ArgoCD
+# Kubernetes Cluster
 
 Connected to kubernetes service to execute create ArgoCD instance.
 
@@ -9,13 +9,17 @@ Connected to kubernetes service to execute create ArgoCD instance.
 Install this project with `terraform init`
 
 ```bash
-  terraform -chdir=cluster/ init
+  terraform -chdir=cluster/ init -backend-config=variables/test/backend.conf
+```
+or if you want to reconfigure using different environments    
+```bash
+  terraform -chdir=cluster/ init -backend-config=variables/test/backend.conf -reconfigure
 ```
     
 ## Execute
 Validate the code with `terraform validate`
 ```bash
-  terraform -chdir=cluster/ validate
+  terraform -chdir=cluster/ validate 
 ```
 Review the plan with `terraform plan`
 

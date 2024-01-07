@@ -1,7 +1,7 @@
 variable "namespaces" {
   type        = list(string)
   description = "A list of namespaces to create."
-  default     = [] 
+  default     = []
 }
 
 variable "role_environments" {
@@ -11,7 +11,7 @@ variable "role_environments" {
     service_account_name = string
     role_name            = string
     role_binding_name    = string
-    rules                = list(object({
+    rules = list(object({
       api_groups = list(string)
       resources  = list(string)
       verbs      = list(string)
@@ -34,9 +34,9 @@ variable "cert_issuer_environments" {
 variable "kubernetes_secrets" {
   description = "A map of Kubernetes secrets to create"
   type = map(object({
-    type        = string
-    namespace   = string
-    data        = map(string)
+    type      = string
+    namespace = string
+    data      = map(string)
   }))
   default = {}
 }
