@@ -5,10 +5,10 @@ provider "helm" {
 }
 
 resource "helm_release" "argo_cd" {
-  atomic     = "true"
-  name       = "argocd"
-  version    = "5.52.0"
-  namespace  = "argocd"
+  atomic    = "true"
+  name      = "argocd"
+  version   = "5.52.0"
+  namespace = "argocd"
 
   repository = "https://argoproj.github.io/argo-helm"
   chart      = "argo-cd"
