@@ -1,3 +1,13 @@
+provider "kubernetes" {
+  config_path = "~/.kube/config"
+}
+
+resource "kubernetes_namespace" "hackspace" {
+  metadata {
+    name = "hackspace"
+  }
+}
+
 provider "helm" {
   kubernetes {
     config_path = "~/.kube/config"
