@@ -14,3 +14,5 @@ octopus/
 
 templates/certificates/client-cert.pem
 templates/certificates/client-key.pem
+
+kubernetes-apim
